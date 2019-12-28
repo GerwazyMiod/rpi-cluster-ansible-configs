@@ -1,0 +1,24 @@
+# Creates the user that will handle daily operations.
+---
+- name: Create admin user
+  user: name={{ admin_user }} shell=/bin/bash
+
+- name: Ensure admin user can log in with their key
+  authorized_key: user={{ admin_user }} key={{ admin_user_key }}
+  tags: update_admin_keys
+
+- name: Add user to sudo
+  lineinfile:
+  path: /etc/sudoers.d/{{ admin_user }}
+  line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
+  state: present
+  mode: 0440
+  create: yes
+  validate: visudo -cf %s
+
+- name: Set includedir in sudoers
+  lineinfile:
+  dest: /etc/sudoers
+  line: "#includedir /etc/sudoers.d"
+  state: present
+  validate: visudo -cf %s
