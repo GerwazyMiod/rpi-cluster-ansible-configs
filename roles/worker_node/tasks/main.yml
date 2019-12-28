@@ -1,15 +1,18 @@
 # Setups worker node (master is also a worker node)
 ---
  - name: Update all packages to latest within distro, then remove unneeded
-   block:
-     - apt: update_cache=yes upgrade=dist
-     - apt: autoremove=yes
+   apt: 
+     update_cache: yes 
+     upgrade: dist
 
  - name: Configure timezone
    timezone:
      name: Europe/Warsaw
 
  - name: Install basic software 
-   apt: name={{ item }} state=installed
-   with_items:
-     - git
+   become: true
+   apt: 
+     update_cache: yes
+     autoremove: yes
+     pkg:
+       - git

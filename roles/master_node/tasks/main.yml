@@ -1,7 +1,10 @@
 # Setups worker node (master is also a worker node)
 ---
- - name: Install master node software 
-   apt: name={{ item }} state=installed
-   with_items:
-     - vim
-     - nmap
+  - name: Install master node software 
+    become: true
+    apt: 
+      update_cache: yes
+      pkg:
+        - vim
+        - nmap
+ 
