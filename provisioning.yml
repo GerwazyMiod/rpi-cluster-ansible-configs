@@ -1,17 +1,18 @@
 # Initial configuration for the Raspberry Pi that handles training cluster provisioning
 
-- hosts: raspberrypi-unprovisioned
+- hosts: node2
   remote_user: pi
   become: yes
   become_method: sudo
-  ansible_become_pass: raspberry
   vars:
     host: node2
-    
+    ansible_become_pass: raspberry 
+
   roles:
   - user_setup
   - worker_node
 
+  tasks:
   - name: Configure the hostname
     block:
       - replace:
