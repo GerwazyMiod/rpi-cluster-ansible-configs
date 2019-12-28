@@ -7,4 +7,5 @@
       pkg:
         - vim
         - nmap
- 
+        - wget
+        - curl
