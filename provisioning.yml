@@ -9,7 +9,7 @@
     ansible_become_pass: raspberry 
 
   roles:
-  - user_setup
+  - first_setup
   - worker_node
 
   tasks:

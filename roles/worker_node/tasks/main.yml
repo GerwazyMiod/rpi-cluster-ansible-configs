@@ -1,13 +1,9 @@
 # Setups worker node (master is also a worker node)
 ---
- - name: Update all packages to latest within distro, then remove unneeded
+ - name: Update all packages to latest within distro
    apt: 
      update_cache: yes 
      upgrade: dist
-
- - name: Configure timezone
-   timezone:
-     name: Europe/Warsaw
 
  - name: Install basic software 
    become: true
