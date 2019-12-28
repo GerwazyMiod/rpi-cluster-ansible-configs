@@ -8,3 +8,8 @@
  - name: Configure timezone
    timezone:
      name: Europe/Warsaw
+
+ - name: Install basic software 
+   apt: name={{ item }} state=installed
+   with_items:
+     - git
