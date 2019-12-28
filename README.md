@@ -5,5 +5,5 @@ Inspired by: https://github.com/chesterbr/chester-ansible-configs
 
 Use provisioning.yml playbook like this:
 ```
-ansible-playbook provisioning.yml --extra-vars "host=node2"
+ansible-playbook -i hosts provisioning.yml --extra-vars "host=node2"
 ```
