@@ -12,18 +12,19 @@ Group={{ node_exporter_system_group }}
 ExecStart=/usr/local/bin/node_exporter \
 {% for collector in node_exporter_enabled_collectors -%}
 {%   if not collector is mapping %}
-    --collector.{{ collector }} \
+ --collector.{{ collector }} \
 {%   else -%}
 {%     set name, options = (collector.items()|list)[0] -%}
-    --collector.{{ name }} \
+ --collector.{{ name }} \
 {%     for k,v in options|dictsort %}
-    --collector.{{ name }}.{{ k }}={{ v }} \
+ --collector.{{ name }}.{{ k }}={{ v }} \
 {%     endfor -%}
 {%   endif -%}
 {% endfor -%}
 {% for collector in node_exporter_disabled_collectors %}
-    --no-collector.{{ collector }} \
+  --no-collector.{{ collector }} \
 {% endfor %}
+  --web.listen-address=":9100"
 
 SyslogIdentifier=node_exporter
 Restart=always
