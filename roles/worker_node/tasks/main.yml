@@ -1,6 +1,7 @@
 # Setups worker node (master is also a worker node)
 ---
  - name: Update all packages to latest within distro
+   become: true  
    apt: 
      update_cache: yes 
      upgrade: dist
