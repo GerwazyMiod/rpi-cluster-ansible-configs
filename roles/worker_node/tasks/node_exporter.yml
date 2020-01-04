@@ -100,6 +100,7 @@
     notify: restart node_exporter
     
   - name: Create textfile collector dir
+    become: true
     file:
       path: "{{ node_exporter_textfile_dir }}"
       state: directory
