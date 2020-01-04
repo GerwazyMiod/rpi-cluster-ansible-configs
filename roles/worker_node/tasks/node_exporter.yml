@@ -40,12 +40,14 @@
     run_once: true
 
   - name: Create the node_exporter group
+    become: true 
     group:
       name: "{{ node_exporter_system_group }}"
       state: present
       system: true
         
   - name: Create the node_exporter user
+    become: true 
     user:
       name: "{{ node_exporter_system_user }}"
       groups: "{{ node_exporter_system_group }}"
@@ -78,6 +80,7 @@
       check_mode: false
       
     - name: Propagate node_exporter binaries
+      become: true 
       copy:
         src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-armv7/node_exporter"
         dest: "/usr/local/bin/node_exporter"
@@ -87,6 +90,7 @@
       notify: restart node_exporter
       
   - name: Copy the Node Exporter systemd service file
+    become: true 
     template:
       src: node_exporter.service.j2
       dest: /etc/systemd/system/node_exporter.service
