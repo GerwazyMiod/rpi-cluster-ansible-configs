@@ -12,3 +12,10 @@
      autoremove: yes
      pkg:
        - git
+       - golang
+
+ - import_tasks: node_exporter.yml
+   tags:
+     - node_exporter_install
+     - node_exporter_configure
+     - node_exporter_run      
