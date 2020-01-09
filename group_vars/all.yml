@@ -1,2 +1,5 @@
 admin_user: exec
 admin_user_key: https://github.com/GerwazyMiod.keys
+
+master_ip: "192.168.1.1"
+

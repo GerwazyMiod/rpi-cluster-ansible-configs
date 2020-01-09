@@ -6,21 +6,10 @@
   become_method: sudo
   vars:
     host: node2
-    ansible_become_pass: raspberry 
+    ansible_become_pass: "raspberry" 
+    ansible_ssh_pass: "raspberry" 
 
   roles:
   - first_setup
-  - worker_node
 
-  tasks:
-  - name: Configure the hostname
-    block:
-      - replace:
-          dest: "/etc/hosts"
-          regexp: "raspberrypi"
-          replace: "{{ host }}"
-      - hostname:
-          name: "{{ host }}"
 
-  - name: Reboot
-    reboot:

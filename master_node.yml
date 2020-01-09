@@ -1,6 +1,6 @@
 # After initial configuration, playbook for master node software installation
 
 - hosts: master
-
+  become: yes
   roles:
   - master_node

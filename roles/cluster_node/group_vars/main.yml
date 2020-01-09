@@ -1,3 +1,4 @@
+#Prometheus - node exporter configuration
 node_exporter_system_group: "node-exprtr"
 node_exporter_system_user: "{{ node_exporter_system_group }}"
 
@@ -9,3 +10,6 @@ node_exporter_enabled_collectors:
       directory: "{{ node_exporter_textfile_dir }}"
 
 node_exporter_disabled_collectors: []
+
+#Rancher K3S configuration
+k3s_version: v0.8.1

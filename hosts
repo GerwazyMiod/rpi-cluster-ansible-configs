@@ -2,11 +2,13 @@
 node1
 
 [workers]
-node1
 node2
 node3
 node4
-node5
+
+[cluster]
+master
+workers
 
 [raspberrypi-unprovisioned]
 raspberrypi.local

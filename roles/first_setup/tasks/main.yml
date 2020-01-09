@@ -1,34 +1,79 @@
 # Creates the user that will handle daily operations.
 ---
-    - name: Create admin user
-      user: name={{ admin_user }} shell=/bin/bash
-    
-    - name: Ensure admin user can log in with their key
-      authorized_key: 
-       user: "{{ admin_user }}" 
-       key: "{{ admin_user_key }}"
-      tags: update_admin_keys
-    
-    - name: Add user to sudo
-      lineinfile:
-        path: /etc/sudoers.d/{{ admin_user }}
-        line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
-        state: present
-        mode: 0440
-        create: yes
-        validate: visudo -cf %s
-    
-    - name: Set includedir in sudoers
-      lineinfile:
-        dest: /etc/sudoers
-        line: "#includedir /etc/sudoers.d"
-        state: present
-        validate: visudo -cf %s
+  - name: Create admin user
+    user: name={{ admin_user }} shell=/bin/bash
+  
+  - name: Ensure admin user can log in with their key
+    authorized_key: 
+      user: "{{ admin_user }}" 
+      key: "{{ admin_user_key }}"
+    tags: update_admin_keys
+  
+  - name: Add user to sudo
+    lineinfile:
+      path: /etc/sudoers.d/{{ admin_user }}
+      line: '{{ admin_user }} ALL=(ALL) NOPASSWD: ALL'
+      state: present
+      mode: 0440
+      create: yes
+      validate: visudo -cf %s
+  
+  - name: Set includedir in sudoers
+    lineinfile:
+      dest: /etc/sudoers
+      line: "#includedir /etc/sudoers.d"
+      state: present
+      validate: visudo -cf %s
 
 #####
 # Next tasks are for basic raspberry pi config
 ####
-    - name: Configure timezone
-      timezone:
-        name: Europe/Warsaw
-    
+  - name: Configure timezone
+    timezone:
+      name: Europe/Warsaw
+
+  - name: Set GPU memory to 16Mb
+    lineinfile:
+      path: /boot/config.txt
+      create: no 
+      state: present
+      regexp: "^gpu_mem="
+      backup: yes
+      line: "gpu_mem=16"
+
+  - name: Configure the hostname
+    block:
+      - replace:
+          dest: "/etc/hosts"
+          regexp: "raspberrypi"
+          replace: "{{ host }}"
+      - hostname:
+          name: "{{ host }}"
+    register: boot_cmdline
+
+#####
+# Next tasks are for container-ready operations
+####
+  - name: Activating cgroup for Kubernetes or Rancher.k3s operation
+    lineinfile:
+      path: /boot/cmdline.txt
+      regexp: '^(.*rootwait)$'
+      line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
+      backrefs: true
+    tags: cgrup_activation
+    register: boot_cmdline
+
+#####
+# Next tasks are for finishing touches
+####
+  - name: Update all packages to latest within distro
+    become: true  
+    apt: 
+      update_cache: yes 
+      autoclean: yes
+      autoremove: yes
+      upgrade: dist
+
+  - name: Reboot
+    reboot:
+    when: ( boot_cmdline | changed )

@@ -9,3 +9,8 @@
         - nmap
         - wget
         - curl
+        - fail2ban
+
+  - import_tasks: k3s.yml
+    tags:
+      - k3s_install     

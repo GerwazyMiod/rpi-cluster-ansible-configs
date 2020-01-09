@@ -1,22 +1,4 @@
 # Setups worker node (master is also a worker node)
 ---
- - name: Update all packages to latest within distro
-   become: true  
-   apt: 
-     update_cache: yes 
-     upgrade: dist
+- import_tasks: k3s.yml
 
- - name: Install basic software 
-   become: true
-   apt: 
-     update_cache: yes
-     autoremove: yes
-     pkg:
-       - git
-       - golang
-
- - import_tasks: node_exporter.yml
-   tags:
-     - node_exporter_install
-     - node_exporter_configure
-     - node_exporter_run      

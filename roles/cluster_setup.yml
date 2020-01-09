@@ -1,0 +1,15 @@
+# After initial configuration, playbook for setting up raspberries in cluster
+- hosts: cluster
+  become: yes
+  roles:
+  - cluster_node
+
+- hosts: master
+  become: yes
+  roles:
+  - master_node
+
+- hosts: workers
+  become: yes
+  roles:
+    - worker_node
