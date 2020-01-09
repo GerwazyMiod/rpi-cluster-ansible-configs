@@ -6,9 +6,17 @@ Inspired by:
 * https://github.com/cloudalchemy/ansible-node-exporter
 
 Use provisioning.yml playbook like this:
-```
+```bash
 ansible-playbook -i hosts provisioning.yml -k
+ansible-playbook -i hosts cluster.yml 
 ```
+
+After playing everything from Ansible - log into your server node and run:
+```bash
+$ sudo k3s kubectl get node -o wide
+```
+You should see all of your nodes broadcasting a _Ready_ status.
+
 
 ### What is configured here? ###
 
