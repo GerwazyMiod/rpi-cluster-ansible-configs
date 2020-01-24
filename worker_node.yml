@@ -1,6 +1,0 @@
-# After initial configuration, playbook for master node software installation
-
-- hosts: all
-  become: yes
-  roles:
-  - worker_node

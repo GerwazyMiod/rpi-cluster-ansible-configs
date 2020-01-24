@@ -2,12 +2,12 @@
 - hosts: cluster
   become: yes
   roles:
-  - cluster_node
+    - cluster_node
 
 - hosts: master
   become: yes
   roles:
-  - master_node
+    - master_node
 
 - hosts: workers
   become: yes

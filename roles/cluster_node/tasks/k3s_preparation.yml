@@ -26,3 +26,16 @@
       owner: root
       group: root
       mode: 755
+
+- name: Activating cgroup for Kubernetes or Rancher.k3s operation
+  lineinfile:
+    path: /boot/cmdline.txt
+    regexp: '^(.*rootwait)$'
+    line: '\1 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory'
+    backrefs: true
+  tags: cgrup_activation
+  register: boot_cmdline
+
+- name: Reboot
+  reboot:
+  when: ( boot_cmdline | changed )
