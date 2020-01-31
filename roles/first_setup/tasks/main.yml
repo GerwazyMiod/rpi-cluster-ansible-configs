@@ -49,7 +49,7 @@
           replace: "{{ host }}"
       - hostname:
           name: "{{ host }}"
-    register: boot_cmdline
+        register: boot_cmdline
 
 #####
 # Next tasks are for finishing touches
